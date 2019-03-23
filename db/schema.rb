@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2019_03_21_210805) do
     t.string "first_name"
     t.string "last_name"
     t.string "username"
+    t.string "password_digest"
   end
 
 end
