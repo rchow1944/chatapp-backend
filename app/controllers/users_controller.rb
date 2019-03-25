@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   end
 
   def messages
-    render json: { user: UserSerializer.new(current_user) }, status: :accepted
+    render json: { user: UserSerializer.new(current_user), rooms: current_user.rooms }, status: :accepted
   end
 
   private

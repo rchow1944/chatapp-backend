@@ -6,6 +6,6 @@ Rails.application.routes.draw do
   post '/login', to: 'auth#create'
   get '/messages', to: 'users#messages'
 
-  mount ActionCable.server => '/cable'
+  # mount ActionCable.server => '/cable'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
