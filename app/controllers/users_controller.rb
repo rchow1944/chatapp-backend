@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   skip_before_action :authorized, only: [:create]
 
   def index
+    byebug
     @users = User.all.map do |user|
       UserSerializer.new(user)
     end
@@ -10,7 +11,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    byebug
     @user = User.create(user_params)
     if @user.valid?
       @token = encode_token(user_id: @user.id)
@@ -21,7 +21,10 @@ class UsersController < ApplicationController
   end
 
   def messages
-    render json: { user: UserSerializer.new(current_user), rooms: current_user.rooms, messages: current_user.messages }, status: :accepted
+    @room_and_receiver = current_user.rooms.map do |room|
+      {room: room, receiver: UserSerializer.new(room.users[1])}
+    end
+    render json: { user: UserSerializer.new(current_user), rooms: @room_and_receiver, messages: current_user.messages }, status: :accepted
   end
 
   private
