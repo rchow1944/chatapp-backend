@@ -22,9 +22,17 @@ class UsersController < ApplicationController
 
   def messages
     @room_and_receiver = current_user.rooms.map do |room|
-      {room: room, receiver: UserSerializer.new(room.users[1])}
+      @receiver = room.users.find do |user|
+        current_user.id != user.id
+      end
+
+      {room: room, receiver: UserSerializer.new(@receiver)}
     end
-    render json: { user: UserSerializer.new(current_user), rooms: @room_and_receiver, messages: current_user.messages }, status: :accepted
+
+    @uniq_room_and_receiver = @room_and_receiver.uniq do |r_r|
+      r_r[:room].id
+    end
+    render json: { user: UserSerializer.new(current_user), rooms: @uniq_room_and_receiver, messages: current_user.messages }, status: :accepted
   end
 
   private
